@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+
 @Component({
   selector: 'app-search-criteria',
   templateUrl: './search-criteria.component.html',
@@ -12,4 +13,8 @@ export class SearchCriteriaComponent implements OnInit {
   ngOnInit() {
   }
 
+  toggleMenu(id: string) {
+    console.log(id);
+    document.getElementById(id).classList.toggle('showMenu');
+  }
 }

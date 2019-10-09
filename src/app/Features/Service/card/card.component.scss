@@ -1,0 +1,24 @@
+
+.card {
+
+  &_rate {
+    position: absolute;
+    top: 0.7rem;
+    left: 1.99rem;
+    font-size: 0.75rem;
+    &_img {
+      position: relative;
+    }
+  }
+
+  &_brief{
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &-title , .title {
+    color: #ffc107;
+  }
+
+}

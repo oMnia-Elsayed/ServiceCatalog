@@ -1,0 +1,81 @@
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+
+      <div class="col-12">
+        <span>Categories: </span>
+        <span *ngFor="let c of catalogService.service.Categoryies; let count = last">
+          {{c.Name}} <ng-container *ngIf="!count"> | </ng-container>
+        </span>
+      </div>
+      <div class="col-12">
+        <span>Channels: </span>
+        <span *ngFor="let c of catalogService.service.Channels; let count = last">
+          {{c.Name}} <ng-container *ngIf="!count"> | </ng-container>
+        </span>
+      </div>
+
+    </div>
+
+    <div class="col-6">
+
+      <div class="col-12">
+        <span>Audience: </span>
+        <span> {{catalogService.service.Audience}} </span>
+      </div>
+      <div class="col-12">
+        <span>Duration: </span>
+        <span> {{catalogService.service.ServicePeriod}} days</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="container">
+    <div class="row">
+      <div class="col-6">
+        <button class="btn btn-secondary"> Request Service </button>
+      </div>
+    </div>
+</div>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <accordion [isAnimated]="true">
+        <accordion-group heading="Service Description" *ngIf="catalogService.service.ServiceBrief != null">
+          {{ catalogService.service.ServiceBrief}}
+        </accordion-group>
+        <accordion-group heading="Service Requirments" *ngIf="catalogService.service.ServiceRequirements != null">
+          <p>{{ catalogService.service.ServiceRequirements}}</p>
+        </accordion-group>
+        <accordion-group heading="Service Flow Char" *ngIf="catalogService.service.Workflow != null">
+          <p>{{ catalogService.service.Workflow}}</p>
+        </accordion-group>
+        <accordion-group heading="Service Delivery" *ngIf="catalogService.service.ServicesSteps != null">
+          <p>{{ catalogService.service.ServicesSteps}}</p>
+        </accordion-group>
+        <accordion-group heading="Service Documents" *ngIf="catalogService.service.ServiceDocuments != null">
+          <p>{{ catalogService.service.ServiceDocuments}}</p>
+        </accordion-group>
+        <accordion-group heading="After Request Service" *ngIf="catalogService.service.ServiceAfterRequest != null">
+          <p>{{ catalogService.service.ServiceAfterRequest}}</p>
+        </accordion-group>
+      </accordion>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+      <button class="btn btn-secondary"> Send your notes </button>
+    </div>
+    <div class="col-6">
+      <span> Rate the service:
+          <rating [(ngModel)]="rate" [max]="max" [readonly]="isReadonly"></rating>
+      </span>
+    </div>
+  </div>
+</div>

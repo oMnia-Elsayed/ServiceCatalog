@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CatalogService } from 'src/app/_service/catalog-service.service';
+
 
 @Component({
   selector: 'app-list',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListComponent implements OnInit {
 
-  constructor() { }
+  // allServices: [];
+
+  constructor(public catalogService: CatalogService) {
+
+  }
 
   ngOnInit() {
+    this.catalogService.getAllServices();
+    // this.catalogService.getServiceById(37);
   }
 
 }

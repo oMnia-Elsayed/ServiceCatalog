@@ -1,0 +1,29 @@
+<div class="card text-center my-3">
+  <div class="row">
+    <span class="col-8">
+      <h6 class="card-title mt-3">{{catalog.Name}}</h6>
+    </span>
+    <span class="col-2">
+      <!-- Rating here -->
+      <img class="card_rate_img" src="../../../../assets/images/Star-Icon.png" alt="">
+      <span class="card_rate">{{roundRate(catalog.RatingValue)}} </span>
+    </span>
+  </div>
+  <div class="row card-body pt-0">
+    <p class="card-text card_brief px-4">{{catalog.Brief}} Some randome text</p>
+    <a href="#" class="btn btn-outline-warning ml-5">New Service</a>
+  </div>
+  <div class="card-footer">
+   <div class="row">
+    <div class="col-1">
+      <img src="../../../../assets/images/Services-Manual-Icon.png" alt="">
+    </div>
+    <div class="col-1">
+      <img src="../../../../assets/images/Services-Electronic-Icon.png" alt="">
+    </div>
+    <div class="col d-flex justify-content-end">
+      <a [routerLink]="['/service' , 'details' , catalog.Id]" class="title">Service details</a>
+    </div>
+   </div>
+  </div>
+</div>

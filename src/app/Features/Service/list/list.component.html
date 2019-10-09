@@ -1,9 +1,23 @@
 
-<div class="container">
-  <div class="row my-3">
-    <div class="col-10">
+<div class="container-fluid criteria">
+  <div class="row my-3 ">
+    <div class="my-0 mx-auto">
       <app-search-criteria></app-search-criteria>
     </div>
   </div>
 </div>
-<p>list works!</p>
+
+<div class="container">
+  <div class="row">
+    <div class="col-3 serviceCard" *ngFor="let cs of catalogService.serviceData['Services']">
+      <app-card [Catalog]="cs"></app-card>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <app-pagination></app-pagination>
+  </div>
+</div>
+
