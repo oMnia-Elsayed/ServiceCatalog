@@ -1,23 +1,100 @@
+<head>
+  <style>
+    .my-pagination /deep/ .ngx-pagination .current {
+      background-color: #ffc107 !important;
+    }
 
-<div class="container-fluid criteria">
-  <div class="row my-3 ">
-    <div class="my-0 mx-auto">
-      <app-search-criteria></app-search-criteria>
+    .my-pagination /deep/ .ngx-pagination a {
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<div class="container-fluid criteria py-2 my-2">
+  <div class="my-0 mx-auto criteria_search">
+    <div class="row">
+      <div class="col-12">
+        <h3>Search Criteria</h3>
+      </div>
+    </div>
+    <div class="row my-3 mx-0">
+      <div class="col-auto px-2">
+        <div class="btn-group" dropdown>
+          <button id="button-basic" dropdownToggle type="button" class="btn dropdown-toggle"
+            aria-controls="dropdown-basic">
+            All Status <span class="caret"></span>
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+            <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
+            <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
+            <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-auto px-2">
+        <div class="btn-group" dropdown>
+          <button id="button-basic" dropdownToggle type="button" class="btn dropdown-toggle"
+            aria-controls="dropdown-basic">
+            All Channels <span class="caret"></span>
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+            <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
+            <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
+            <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-auto px-2">
+        <div class="btn-group" dropdown>
+          <button id="button-basic" dropdownToggle type="button" class="btn dropdown-toggle"
+            aria-controls="dropdown-basic">
+            All Categories <span class="caret"></span>
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+            <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
+            <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
+            <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-auto px-2">
+        <div class="btn-group" dropdown>
+          <button id="button-basic" dropdownToggle type="button" class="btn dropdown-toggle"
+            aria-controls="dropdown-basic">
+            All Audience <span class="caret"></span>
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+            <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
+            <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
+            <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText" autocomplete="off">
+      </div>
+
+      <div class="col">
+        <button class="btn btn-warning">Search</button>
+      </div>
     </div>
   </div>
 </div>
 
 <div class="container">
   <div class="row">
-    <div class="col-3 serviceCard" *ngFor="let cs of catalogService.serviceData['Services']">
+    <!-- <div class="col-3 serviceCard" *ngFor="let cs of catalogService.serviceData['Services'] | filter:searchText | paginate : pagination"> -->
+    <div class="col-3 serviceCard" *ngFor="let cs of catalogService.serviceData['Services'] | filter:searchText">
       <app-card [Catalog]="cs"></app-card>
     </div>
   </div>
 </div>
 
-<div class="container">
-  <div class="row">
-    <app-pagination></app-pagination>
+<!-- <div class="container" *ngIf="catalogService.serviceData['Services'].length > 8">
+  <div class="row my-4">
+  <div class="col-12" align = "center">
+    <pagination-controls class="my-pagination" (pageChange)="pageChanged($event)" previousLabel="" nextLabel=""></pagination-controls>
   </div>
-</div>
-
+  </div>
+</div> -->

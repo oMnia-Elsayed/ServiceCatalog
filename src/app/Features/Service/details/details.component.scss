@@ -2,3 +2,24 @@
 .btn-link {
   color: #ffc107 !important;
 }
+.criteria {
+  background-color: #F8F8F8;
+}
+
+
+.service {
+  &_requestBtn {
+    background-color: #ffc107;
+    color: white;
+  }
+  &_sendBtn {
+    background-color: transparent;
+    border: 0.1rem solid #ffc107;
+    color: #ffc107;
+  }
+  &_rate {
+    color: rgb(126, 122, 122);
+    font-size: 1.25rem;
+    line-height: 1.875rem;
+  }
+}

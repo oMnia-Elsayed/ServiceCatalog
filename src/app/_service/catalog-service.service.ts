@@ -20,5 +20,8 @@ export class CatalogService {
                                                                            console.log(res); });
   }
 
+  deleteService(id: number) {
+    return this.http.delete(`http://10.0.15.125:5002/api/servicedbs/${id}`);
+  }
 
 }
