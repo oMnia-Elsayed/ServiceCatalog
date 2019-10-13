@@ -1,4 +1,4 @@
-<div class="card text-center my-3">
+<div class="card text-center my-3" (click)="navigateToEdit(catalog.Id)">
   <div class="row">
     <span class="col-8">
       <h6 class="card-title mt-3">{{catalog.Name}}</h6>
@@ -22,7 +22,7 @@
         <img src="../../../../assets/images/Services-Electronic-Icon.png" alt="">
       </div>
       <div class="col-1">
-        <a [routerLink]="['']" routerLinkActive="router-link-active"  (click)="openModel(catalog.Id)" ><img src="../../../../assets/images/delete.png" class="card_deleteIcon" alt=""></a>
+        <a [routerLink]="['']" routerLinkActive="router-link-active"  (click)="openModel($event,catalog.Id)" ><img src="../../../../assets/images/delete.png" class="card_deleteIcon" alt=""></a>
       </div>
       <div class="col d-flex justify-content-end">
         <a [routerLink]="['/service' , 'details' , catalog.Id]" class="title">Service details</a>

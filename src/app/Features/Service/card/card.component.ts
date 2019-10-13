@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ModalManager } from 'ngb-modal';
 import { CatalogService } from 'src/app/_service/catalog-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-card',
@@ -14,7 +15,7 @@ export class CardComponent implements OnInit {
   @Input('Catalog') catalog;
 
   @ViewChild('myModal', {static: false}) myModal;
-  constructor(public catalogService: CatalogService, private modalService: ModalManager) {
+  constructor(public catalogService: CatalogService, private modalService: ModalManager, private router: Router) {
    }
 
   ngOnInit() {
@@ -24,7 +25,8 @@ export class CardComponent implements OnInit {
     return  Math.round(rate * 10) / 10;
   }
 
-  openModel(id: number) {
+  openModel(event, id: number) {
+    event.stopPropagation();
     this.modalService.open(this.myModal );
     this.serviceId = id;
   }
@@ -34,8 +36,13 @@ export class CardComponent implements OnInit {
   }
   deleteService(id: number) {
     this.catalogService.deleteService(id).subscribe(res => {
+      location.reload(); // to refresh page
       this.catalogService.getAllServices();
       this.modalService.close(this.myModal);
     });
+  }
+
+  navigateToEdit(id) {
+    this.router.navigate([`/edit-service/${id}`]);
   }
 }

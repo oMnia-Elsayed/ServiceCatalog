@@ -85,7 +85,7 @@
 <div class="container">
   <div class="row">
     <!-- <div class="col-3 serviceCard" *ngFor="let cs of catalogService.serviceData['Services'] | filter:searchText | paginate : pagination"> -->
-    <div class="col-3 serviceCard" *ngFor="let cs of catalogService.serviceData['Services'] | filter:searchText">
+    <div class="col-3 serviceCard" *ngFor="let cs of allData | filter:searchText">
       <app-card [Catalog]="cs"></app-card>
     </div>
   </div>

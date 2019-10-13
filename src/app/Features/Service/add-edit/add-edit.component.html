@@ -1,20 +1,41 @@
 <div class="container">
   <div class="row justify-content-center py-5">
-    <form class="w-50">
+    <form class="w-50" [formGroup]="serviceForm" (ngSubmit)="onSubmit()" autocomplete="off">
+
+      <!-- Service Name -->
       <div class="form-group">
         <label for="serviceName">Service Name</label>
-        <input type="text" class="form-control" id="serviceName" aria-describedby="emailHelp"
-          placeholder="Service Name">
+        <span class="error"> *</span>
+        <input type="text" class="form-control" id="serviceName" placeholder="Name" formControlName="ServiceTitle">
       </div>
+      <!-- Service Name Validation -->
+      <span *ngIf="!serviceForm.get('ServiceTitle').valid">
+        <span *ngIf="serviceForm.controls['ServiceTitle'].hasError('pattern')" class="error">Name should be 3 letters to
+          20 letters , No Numbers !</span>
+        <span *ngIf="serviceForm.get('ServiceTitle').touched" class="error">Service Name is Required !</span>
+      </span>
+
+      <!-- Service Description -->
       <div class="form-group">
         <label for="serviceDes">Service Description</label>
-        <input type="text" class="form-control" id="serviceDes" placeholder="Service Description">
+        <textarea class="form-control" id="serviceDes" placeholder="Description" rows="3"
+          formControlName="ServiceBrief"></textarea>
       </div>
+      <!-- Service Description Validation -->
+      <span *ngIf="!serviceForm.get('ServiceBrief').valid">
+        <span *ngIf="serviceForm.controls['ServiceBrief'].hasError('pattern')" class="error">Name should be 3 letters to
+          20 letters , No Numbers !</span>
+        <span *ngIf="serviceForm.get('ServiceBrief').touched" class="error">Service Name is Required !</span>
+      </span>
+
+
+      <!-- Service Rate -->
       <div class="form-group">
         <label for="serviceRate">Service Rate</label>
-        <input type="text" class="form-control" id="serviceRate" placeholder="Service Rate">
+        <input type="text" class="form-control" id="serviceRate" placeholder="Rate"
+          formControlName="Rated">
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary" [disabled]="serviceForm.invalid">Submit</button>
     </form>
   </div>
 </div>

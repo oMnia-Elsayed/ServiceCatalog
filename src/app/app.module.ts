@@ -11,6 +11,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngb-modal';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ReactiveFormsModule } from '@angular/forms';
 // Components
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './Shared/header/header.component';
@@ -40,10 +41,12 @@ import { AddEditComponent } from './Features/Service/add-edit/add-edit.component
     FormsModule,
     ModalModule,
     BsDropdownModule.forRoot(),
+    ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', component: ListComponent },
       { path: 'service/details/:id', component: DetailsComponent },
-      { path: 'add-service' , component: AddEditComponent}
+      { path: 'add-service' , component: AddEditComponent},
+      { path: 'edit-service/:id' , component: AddEditComponent}
     ])
   ],
   providers: [
