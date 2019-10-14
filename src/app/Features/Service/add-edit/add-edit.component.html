@@ -23,19 +23,152 @@
       </div>
       <!-- Service Description Validation -->
       <span *ngIf="!serviceForm.get('ServiceBrief').valid">
-        <span *ngIf="serviceForm.controls['ServiceBrief'].hasError('pattern')" class="error">Name should be 3 letters to
-          20 letters , No Numbers !</span>
+        <span *ngIf="serviceForm.controls['ServiceBrief'].hasError('pattern')" class="error">No Numbers or special characters !</span>
         <span *ngIf="serviceForm.get('ServiceBrief').touched" class="error">Service Name is Required !</span>
       </span>
 
-
       <!-- Service Rate -->
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label for="serviceRate">Service Rate</label>
-        <input type="text" class="form-control" id="serviceRate" placeholder="Rate"
-          formControlName="Rated">
+        <input type="text" class="form-control" id="serviceRate" placeholder="Rate" formControlName="Rated">
+      </div> -->
+      <!-- Service Rate Validation -->
+      <!-- <span *ngIf="serviceForm.controls['Rated'].hasError('pattern')" class="error"> No letters or special
+        charachters !</span> -->
+
+      <div class="form-row">
+        <div class="form-group col-sm-6">
+          <label for="serviceAvailable">Service Available</label>
+        </div>
+        <div class="form-group col-sm-6">
+          <input type="checkbox" class="mr-2" id="serviceAvailable" formControlName="ServiceAvailable"> <span>Available</span>
+        </div>
       </div>
-      <button type="submit" class="btn btn-primary" [disabled]="serviceForm.invalid">Submit</button>
+      <!-- Service External Link -->
+      <div class="form-group">
+        <label for="serviceExternal">Service External Links</label>
+        <input type="text" class="form-control" id="serviceExternal" placeholder="ExternalLinks"
+          formControlName="ServiceExternalLink">
+      </div>
+      <!-- Service External Link Validation -->
+      <span *ngIf="serviceForm.controls['ServiceExternalLink'].hasError('pattern')" class="error">Enter Valid URL </span>
+
+      <!-- Service After Request -->
+      <div class="form-group">
+        <label for="serviceAfterRequest">Service After Request</label>
+        <input type="text" class="form-control" id="serviceAfterRequest" placeholder="AfterRequest"
+          formControlName="ServiceAfterRequest">
+      </div>
+      <!-- Service After Request Validation -->
+      <span *ngIf="serviceForm.controls['ServiceAfterRequest'].hasError('pattern')" class="error"> No Numbers or special
+        charachters !</span>
+
+      <!-- Service Documents -->
+      <div class="form-group">
+        <label for="serviceDocuments">Service Documents</label>
+        <input type="file" class="form-control" id="serviceDocuments" placeholder="Documents"
+          formControlName="ServiceDocuments">
+      </div>
+      <!-- Service Documents Validation -->
+      <span *ngIf="serviceForm.controls['ServiceDocuments'].hasError('pattern')" class="error"> No Numbers or special
+        charachters !</span>
+
+      <!-- Service Cost -->
+      <div class="form-group">
+        <label for="serviceCost">Service Cost</label>
+        <input type="text" class="form-control" id="serviceCost" placeholder="Cost" formControlName="ServiceCost">
+      </div>
+      <!-- Service Cost  Validation-->
+      <span *ngIf="serviceForm.controls['ServiceCost'].hasError('pattern')" class="error"> No Decimal Points or Letters !</span>
+
+      <!-- Service Period -->
+      <div class="form-group">
+        <label for="servicePeriod">Service Period</label>
+        <input type="text" class="form-control" id="servicePeriod" placeholder="Period" formControlName="ServicePeriod">
+      </div>
+      <!-- Service Period Validation -->
+      <span *ngIf="serviceForm.controls['ServicePeriod'].hasError('pattern')" class="error"> No Numbers or special
+        charachters !</span>
+
+      <!-- Service Steps -->
+      <div class="form-group">
+        <label for="serviceSteps">Service Steps</label>
+        <textarea class="form-control" id="serviceSteps" placeholder="Steps" formControlName="ServiceSteps" rows="3"></textarea>
+      </div>
+      <!-- Service Steps Validation -->
+      <span *ngIf="serviceForm.controls['ServiceSteps'].hasError('pattern')" class="error"> No Numbers or special
+        charachters !</span>
+
+      <!-- Service Requirements -->
+      <div class="form-group">
+        <label for="serviceRequirements">Service Requirements</label>
+        <textarea class="form-control" id="serviceRequirements" placeholder="Requirements" rows="3"
+          formControlName="ServiceRequirements"></textarea>
+      </div>
+      <!-- Service Requirments Validation -->
+      <span *ngIf="serviceForm.controls['ServiceRequirements'].hasError('pattern')" class="error"> No Numbers or special
+        charachters !</span>
+
+      <!-- Service WorkFlow -->
+      <div class="form-group">
+        <label for="serviceWorkFlow">Service WorkFlow</label>
+        <textarea class="form-control" id="serviceWorkFlow" placeholder="WorkFlow" rows="3"
+          formControlName="ServiceWorkflow"></textarea>
+      </div>
+      <!-- Service WorkFlow Validation -->
+      <span *ngIf="serviceForm.controls['ServiceWorkflow'].hasError('pattern')" class="error"> No Numbers or special
+        charachters !</span>
+
+        <div class="form-row">
+          <div class="form-group col-sm-6">
+            <button type="button" class="btn btn-warning btn-large"><a  (click)="openModel($event)" >Add Channel</a></button>
+          </div>
+          <div class="form-group col-sm-6">
+            <button type="button" class="btn btn-warning btn-large"><a  (click)="openModel($event)" >Add Category</a></button>
+          </div>
+        </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary" [disabled]="serviceForm.invalid">Submit</button>
+      </div>
+
     </form>
   </div>
 </div>
+
+<modal #channelModal >
+    <modal-header>
+        <h1>Add Channel</h1>
+    </modal-header>
+    <modal-content>
+       <form [formGroup]="channelForm" autocomplete="off">
+          <div class="form-group">
+            <label for="channelName">Channel Name</label>
+            <span class="error"> *</span>
+            <input type="text" class="form-control" id="channelName" placeholder="Name" formControlName="Name">
+          </div>
+       </form>
+    </modal-content>
+    <modal-footer>
+        <button type="submit" class="btn card_btn-Model mr-3" (click)="submitChannel()">Yes</button>
+        <button class="btn card_btn-Model" (click)="closeModel()">No</button>
+    </modal-footer>
+</modal>
+
+<modal #categoryModal >
+    <modal-header>
+        <h1>Add Category</h1>
+    </modal-header>
+    <modal-content>
+      <form [formGroup]="categoryForm" autocomplete="off">
+        <div class="form-group">
+          <label for="categoryName">Channel Name</label>
+          <span class="error"> *</span>
+          <input type="text" class="form-control" id="categoryName" placeholder="Name" formControlName="Name">
+        </div>
+      </form>
+    </modal-content>
+    <modal-footer>
+        <button class="btn card_btn-Model mr-3" (click)="submitCategory()">Yes</button>
+        <button class="btn card_btn-Model" (click)="closeModel()">No</button>
+    </modal-footer>
+</modal>

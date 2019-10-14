@@ -6,16 +6,14 @@ import { Options } from 'selenium-webdriver';
 @Injectable()
 export class CatalogService {
 
-  service;
-  serviceData: [];
+  allData: [];
   readonly baseURL = 'http://10.0.15.125:5001/api/ServiceCatalog/GetService';
   readonly secondURL = 'http://10.0.15.125:5002/api/servicedbs/';
 
   constructor(private http: HttpClient) {}
 
   getAllServices() {
-    return this.http.get(this.baseURL + 's');
-
+    return this.http.get(this.baseURL + 's').subscribe(res => this.allData = res as []);
   }
 
    getServiceById(id: number) {
@@ -23,7 +21,7 @@ export class CatalogService {
   }
 
   deleteService(id: number) {
-    return this.http.delete(this.secondURL + id);
+    return this.http.delete(this.secondURL + id).subscribe(res => this.getAllServices());
   }
 
   addService(ser) {
@@ -32,18 +30,18 @@ export class CatalogService {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
-    });
+    }).subscribe(res => this.getAllServices());
   }
 
   getAllChannels() {
-    return this.http.get('http://10.0.15.125:5002/api/ServiceCatalogChannelDBs').subscribe(res => console.log(res));
+    return this.http.get('http://10.0.15.125:5002/api/ServiceCatalogChannelDBs');
   }
 
   getAllCategories() {
-    return this.http.get('http://10.0.15.125:5002/api/ServiceCatalogCategoryDBs').subscribe(res => console.log(res));
+    return this.http.get('http://10.0.15.125:5002/api/ServiceCatalogCategoryDBs');
   }
 
   getAllAudiences() {
-    return this.http.get('http://10.0.15.125:5002/api/ServiceCatalogAudienceDBs').subscribe(res => console.log(res));
+    return this.http.get('http://10.0.15.125:5002/api/ServiceCatalogAudienceDBs');
   }
 }

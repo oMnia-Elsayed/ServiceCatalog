@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CatalogService } from 'src/app/_service/catalog-service.service';
-import { async } from 'q';
 
 @Component({
   selector: 'app-details',
@@ -10,20 +9,41 @@ import { async } from 'q';
 })
 export class DetailsComponent implements OnInit {
 
-  max = 10;
-  rate ;
-  isReadonly = true;
-  constructor(public catalogService: CatalogService, private route: ActivatedRoute) { }
+  max = 5;
+  rate = 0 ;
+  isReadonly = false;
+  overStar: number | undefined;
+  percent: number;
+  service;
+  channels = [];
+  categories = [];
+  audiences ;
+  constructor(private catalogService: CatalogService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
       const id = params.id;
-      this.catalogService.getServiceById(id);
+      this.catalogService.getServiceById(id).subscribe(res => {this.service = res; console.log(this.service);
+                                                               this.categories = this.service.Categoryies;
+                                                               this.channels = this.service.Channels;
+                                                               this.audiences = this.service.Audience;
+                                                              //  this.rate =  Math.round(this.service.RatingValue);
+
+      });
     });
   }
 
-  // tslint:disable-next-line: use-lifecycle-interface
-  ngDoCheck() {
-    this.rate =  Math.round(this.catalogService.service.RatingValue);
+  hoveringOver(value: number): void {
+    this.overStar = value;
+    // this.percent = value * 10;
+    this.percent = (value / this.max) * 100;
   }
+
+  resetStar(): void {
+    this.overStar = void 0;
+  }
+  getRate(event) {
+    this.service.RatingValue = event;
+  }
+
 }

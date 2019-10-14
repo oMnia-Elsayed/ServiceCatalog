@@ -35,14 +35,12 @@ export class CardComponent implements OnInit {
     this.modalService.close(this.myModal );
   }
   deleteService(id: number) {
-    this.catalogService.deleteService(id).subscribe(res => {
-      location.reload(); // to refresh page
-      this.catalogService.getAllServices();
-      this.modalService.close(this.myModal);
-    });
+    this.catalogService.deleteService(id);
+    this.modalService.close(this.myModal);
   }
 
-  navigateToEdit(id) {
-    this.router.navigate([`/edit-service/${id}`]);
+  navigateToEdit(cat) {
+    console.log(cat);
+    this.router.navigate([`/edit-service/${cat.Id}`]);
   }
 }
