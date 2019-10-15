@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Options } from 'selenium-webdriver';
+import { Observable, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class CatalogService {
+
+  private subject = new Subject<any>() ;
 
   allData: [];
   readonly baseURL = 'http://10.0.15.125:5001/api/ServiceCatalog/GetService';
@@ -12,26 +14,41 @@ export class CatalogService {
 
   constructor(private http: HttpClient) {}
 
-  getAllServices() {
-    return this.http.get(this.baseURL + 's').subscribe(res => this.allData = res as []);
+
+  get refreshMethod() {
+    return this.subject;
   }
 
-   getServiceById(id: number) {
-    return this.http.get(this.baseURL + `/${id}`);
+  getAllServices(): Observable<any[]> {
+    return this.http.get<any[]>(this.baseURL + 's');
   }
 
-  deleteService(id: number) {
-    return this.http.delete(this.secondURL + id).subscribe(res => this.getAllServices());
+  getServiceById(id: number): Observable<any> {
+    return this.http.get<any>(this.baseURL + `/${id}`);
   }
 
-  addService(ser) {
-    return this.http.post(this.secondURL , ser,
+  deleteService(id: number): Observable<any> {
+    return this.http.delete<any>(this.secondURL + id)
+    .pipe(
+      tap(() => {
+        this.refreshMethod.next();
+      })
+    );
+  }
+
+  addService(ser: any): Observable<any> {
+    return this.http.post<any>(this.secondURL , ser,
       {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
-    }).subscribe(res => this.getAllServices());
+    }).pipe(
+      tap(() => {
+        this.refreshMethod.next();
+      })
+    );
   }
+
 
   getAllChannels() {
     return this.http.get('http://10.0.15.125:5002/api/ServiceCatalogChannelDBs');

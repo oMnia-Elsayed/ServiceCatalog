@@ -14,7 +14,6 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ReactiveFormsModule } from '@angular/forms';
 // Components
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './Shared/header/header.component';
 import { ListComponent } from './Features/Service/list/list.component';
 import { CatalogService } from './_service/catalog-service.service';
 import { CardComponent } from './Features/Service/card/card.component';
@@ -24,7 +23,6 @@ import { AddEditComponent } from './Features/Service/add-edit/add-edit.component
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
     ListComponent,
     CardComponent,
     DetailsComponent,

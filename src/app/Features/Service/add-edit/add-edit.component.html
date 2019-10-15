@@ -119,12 +119,18 @@
       <span *ngIf="serviceForm.controls['ServiceWorkflow'].hasError('pattern')" class="error"> No Numbers or special
         charachters !</span>
 
+
         <div class="form-row">
-          <div class="form-group col-sm-6">
-            <button type="button" class="btn btn-warning btn-large"><a  (click)="openModel($event)" >Add Channel</a></button>
+          <div class="col-sm-6">
+            <div class="form-group" *ngFor="let ch of channelsArray" >
+              <input type="checkbox" class="mr-2" value={{ch.Id}} id={{ch.Id}} (change)="getChannel($event)"> <span>{{ch.Name}}</span>
+            </div>
           </div>
-          <div class="form-group col-sm-6">
-            <button type="button" class="btn btn-warning btn-large"><a  (click)="openModel($event)" >Add Category</a></button>
+
+          <div class="col-sm-6">
+            <div class="form-group" *ngFor="let ch of categoryArray" >
+              <input type="checkbox" class="mr-2" value={{ch.Id}} id="c{{ch.Id}}" (change)="getCategory($event)"> <span>{{ch.Name}}</span>
+            </div>
           </div>
         </div>
       <div class="form-group">
@@ -134,41 +140,3 @@
     </form>
   </div>
 </div>
-
-<modal #channelModal >
-    <modal-header>
-        <h1>Add Channel</h1>
-    </modal-header>
-    <modal-content>
-       <form [formGroup]="channelForm" autocomplete="off">
-          <div class="form-group">
-            <label for="channelName">Channel Name</label>
-            <span class="error"> *</span>
-            <input type="text" class="form-control" id="channelName" placeholder="Name" formControlName="Name">
-          </div>
-       </form>
-    </modal-content>
-    <modal-footer>
-        <button type="submit" class="btn card_btn-Model mr-3" (click)="submitChannel()">Yes</button>
-        <button class="btn card_btn-Model" (click)="closeModel()">No</button>
-    </modal-footer>
-</modal>
-
-<modal #categoryModal >
-    <modal-header>
-        <h1>Add Category</h1>
-    </modal-header>
-    <modal-content>
-      <form [formGroup]="categoryForm" autocomplete="off">
-        <div class="form-group">
-          <label for="categoryName">Channel Name</label>
-          <span class="error"> *</span>
-          <input type="text" class="form-control" id="categoryName" placeholder="Name" formControlName="Name">
-        </div>
-      </form>
-    </modal-content>
-    <modal-footer>
-        <button class="btn card_btn-Model mr-3" (click)="submitCategory()">Yes</button>
-        <button class="btn card_btn-Model" (click)="closeModel()">No</button>
-    </modal-footer>
-</modal>

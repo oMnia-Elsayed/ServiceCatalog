@@ -14,18 +14,18 @@ export class AddEditComponent implements OnInit {
 
   service: any = {};
   serviceForm: FormGroup;
-  channelForm: FormGroup;
-  categoryForm: FormGroup;
   editMode = false;
 
   channelsArray = [];
+  checkedChannels = [];
   categoryArray = [];
-  @ViewChild('channelModal', {static: false}) channelModal;
-  @ViewChild('categoryModal', {static: false}) categoryModal;
+  checkedCategories = [];
 
   constructor(public catalogService: CatalogService, private router: Router,
               private route: ActivatedRoute, private modalService: ModalManager) {
+
     const id = this.route.snapshot.params.id;
+
     if (id) {
       this.editMode = true;
       this.catalogService.getServiceById(id).subscribe(res => {this.service = res;
@@ -41,7 +41,7 @@ export class AddEditComponent implements OnInit {
           Rated: new FormControl(this.editMode ? this.service.Rated : '0', [Validators.pattern(/^(\d*\.)?\d+$/)]),
           ServiceUsage: new FormControl(this.editMode ? this.service.ServiceUsage : '0', [Validators.pattern(/^(\d*\.)?\d+$/)]),
 
-          // ServiceCategoryDBs: new FormArray([]),
+          // ServiceCategoryDBs: new FormArray(this.editMode ? this.service.Categoryies : []),
           // ServiceChannelDBs: new FormArray(this.editMode ? this.service.Channels : []),
           ServiceCatalogAudienceDB: new FormControl(this.editMode ? this.service.Audience : ''),
 
@@ -50,9 +50,8 @@ export class AddEditComponent implements OnInit {
           ServicePeriod: new FormControl(this.editMode ? this.service.ServicePeriod : '', Validators.pattern(/^[0-9]*$/)),
 
           ServiceExternalLink: new FormControl(this.editMode ? this.service.ServiceExternalLink : '',
-           Validators.pattern(/^[A-Za-z ]+(?:[_-][A-Za-z ]+)*$/)),
-          ServiceDocuments: new FormControl(this.editMode ? this.service.ServiceDocuments : '',
-           Validators.pattern(/^[A-Za-z ]+(?:[_-][A-Za-z ]+)*$/)),
+           Validators.pattern(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/)),
+          ServiceDocuments: new FormControl(''),
           ServiceAfterRequest: new FormControl(this.editMode ? this.service.ServiceAfterRequest : '',
            Validators.pattern(/^[A-Za-z ]+(?:[_-][A-Za-z ]+)*$/)),
           ServiceSteps: new FormControl(this.editMode ? this.service.ServiceSteps : '',
@@ -67,6 +66,14 @@ export class AddEditComponent implements OnInit {
           AudienceId: new FormControl(this.editMode ? this.service.Audience : ''),
           ServiceAgency: new FormControl(this.editMode ? this.service.Agency : '')
         });
+                                                               this.checkedChannels = this.service.Channels ;
+                                                               console.log(this.checkedChannels);
+                                                               this.checkedCategories = this.service.Categoryies ;
+                                                               // tslint:disable-next-line: max-line-length
+                                                               this.checkedChannels.forEach(item => document.getElementById(`${item.Id}`).setAttribute('checked', 'checked'));
+                                                               // tslint:disable-next-line: max-line-length
+                                                               this.checkedCategories.forEach(item => document.getElementById(`c${item.Id}`).setAttribute('checked', 'checked'));
+
       });
     }
   }
@@ -99,49 +106,42 @@ export class AddEditComponent implements OnInit {
       ServiceAgency: new FormControl('')
     });
 
-    this.channelForm = new FormGroup({
-      Name: new FormControl(''),
-    });
-    this.categoryForm = new FormGroup({
-      Name: new FormControl(''),
-    });
+    this.catalogService.getAllChannels().subscribe(res => this.channelsArray = res as []);
+    this.catalogService.getAllCategories().subscribe(res => this.categoryArray = res as []);
+
   }
 
   onSubmit() {
     if (this.serviceForm.valid) {
-      this.serviceForm.get('ServiceChannelDBs').value.push(...this.channelsArray);
-      this.serviceForm.get('ServiceCategoryDBs').value.push(...this.categoryArray);
+      this.service.Channels = this.checkedChannels ;
+      this.service.Categoryies = this.checkedCategories ;
+      if (this.editMode) {
 
-      this.catalogService.addService(JSON.stringify(this.serviceForm.value));
-      this.router.navigate(['']);
+      } else {
+        console.log(JSON.stringify(this.serviceForm.value));
+        this.catalogService.addService(JSON.stringify(this.serviceForm.value))
+        .subscribe(res => {});
+      }
     }
+    this.router.navigate(['']);
   }
 
-  openModel(event) {
-    event.stopPropagation();
-    if (event.target.innerText === 'Add Channel') {
-      this.modalService.open(this.channelModal);
+  getChannel(event) {
+    if (event.target.checked === true) {
+      console.log(this.channelsArray.find(e => e.Name === event.target.nextElementSibling.innerHTML));
+      this.checkedChannels.push(this.channelsArray.find(e => e.Name === event.target.nextElementSibling.innerHTML));
     } else {
-      this.modalService.open(this.categoryModal);
+      this.checkedChannels.splice(this.checkedChannels.indexOf(event.target.nextElementSibling.innerHTML), 1);
     }
   }
 
-  closeModel() {
-    this.modalService.close(this.channelModal );
-    this.modalService.close(this.categoryModal);
-  }
-
-  submitChannel() {
-    this.channelsArray.push(this.channelForm.value);
-    console.log(this.channelsArray);
-    this.channelForm.reset();
-    this.closeModel();
-  }
-
-  submitCategory() {
-    this.categoryArray.push(this.categoryForm.value);
-    this.categoryForm.reset();
-    this.closeModel();
+  getCategory(event) {
+    if (event.target.checked === true) {
+      this.checkedCategories.push(this.categoryArray.find(e => e.Name === event.target.nextElementSibling.innerHTML));
+      console.log(this.checkedCategories);
+    } else {
+      this.checkedCategories.splice(this.checkedCategories.indexOf(event.target.nextElementSibling.innerHTML), 1);
+    }
   }
 
 }

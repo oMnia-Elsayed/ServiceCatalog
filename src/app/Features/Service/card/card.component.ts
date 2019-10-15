@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { ModalManager } from 'ngb-modal';
 import { CatalogService } from 'src/app/_service/catalog-service.service';
 import { Router } from '@angular/router';
@@ -18,8 +18,7 @@ export class CardComponent implements OnInit {
   constructor(public catalogService: CatalogService, private modalService: ModalManager, private router: Router) {
    }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   roundRate(rate: number) {
     return  Math.round(rate * 10) / 10;
@@ -35,7 +34,7 @@ export class CardComponent implements OnInit {
     this.modalService.close(this.myModal );
   }
   deleteService(id: number) {
-    this.catalogService.deleteService(id);
+    this.catalogService.deleteService(id).subscribe(res => {});
     this.modalService.close(this.myModal);
   }
 
@@ -43,4 +42,5 @@ export class CardComponent implements OnInit {
     console.log(cat);
     this.router.navigate([`/edit-service/${cat.Id}`]);
   }
+
 }
