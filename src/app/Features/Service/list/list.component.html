@@ -22,14 +22,8 @@
         <div class="col-lg-2 col-md-6 mb-2">
           <div class="btn-group w-100" dropdown>
             <button id="button-basic" dropdownToggle type="button" class="btn dropdown-toggle w-100"
-              aria-controls="dropdown-basic">
-              All Status <span class="caret"></span>
-            </button>
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-              <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
-              <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
-              <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
+              aria-controls="dropdown-basic" (click)="getAll()">
+              All Data </button>
           </div>
         </div>
         <div class="col-lg-2 col-md-6 mb-2">
@@ -39,7 +33,7 @@
               All Channels <span class="caret"></span>
             </button>
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-              <li role="menuitem" *ngFor="let c of channels"><a class="dropdown-item" href="#">{{c.Name}}</a></li>
+              <li role="menuitem" *ngFor="let c of channels"><a class="dropdown-item" (click)="getFilter(c,'channel')">{{c.Name}}</a></li>
             </ul>
           </div>
         </div>
@@ -50,7 +44,7 @@
               All Categories <span class="caret"></span>
             </button>
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-              <li role="menuitem" *ngFor="let c of categories"><a class="dropdown-item" href="#">{{c.Name}}</a></li>
+              <li role="menuitem" *ngFor="let c of categories"><a class="dropdown-item" (click)="getFilter(c,'category')">{{c.Name}}</a></li>
             </ul>
           </div>
         </div>
@@ -61,7 +55,7 @@
               All Audience <span class="caret"></span>
             </button>
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-              <li role="menuitem" *ngFor="let c of audiences"><a class="dropdown-item" href="#">{{c.Name}}</a></li>
+              <li role="menuitem" *ngFor="let c of audiences"><a class="dropdown-item" (click)="getFilter(c,'audience')">{{c.Name}}</a></li>
             </ul>
           </div>
         </div>
@@ -71,7 +65,7 @@
         </div>
 
         <div class="col-lg-1 col-md-6 mb-2">
-          <button class="btn btn-warning w-100">Search</button>
+          <button class="btn btn-warning w-100" (click)="clearSearch($event)">Clear</button>
         </div>
       </div>
     </div>
@@ -80,7 +74,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-lg-3 col-md-4 col-sm-6 col serviceCard" *ngFor="let cs of allData | filter:searchText | paginate : { itemsPerPage: 6, currentPage: p}">
+    <div class="col-lg-3 col-md-4 col-sm-6 col serviceCard" *ngFor="let cs of allData | filter:searchText | paginate : { itemsPerPage: 8, currentPage: p}">
       <app-card [Catalog]="cs"></app-card>
     </div>
   </div>

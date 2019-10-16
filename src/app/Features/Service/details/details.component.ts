@@ -14,21 +14,23 @@ export class DetailsComponent implements OnInit {
   isReadonly = false;
   overStar: number | undefined;
   percent: number;
-  service;
-  channels = [];
-  categories = [];
-  audiences ;
-  constructor(private catalogService: CatalogService, private route: ActivatedRoute) { }
+  service: any = {};
+  channels: any = [];
+  categories: any = [];
+  audiences: any = '' ;
+  constructor(private catalogService: CatalogService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
       const id = params.id;
-      this.catalogService.getServiceById(id).subscribe(res => {this.service = res; console.log(this.service);
-                                                               this.categories = this.service.Categoryies;
-                                                               this.channels = this.service.Channels;
-                                                               this.audiences = this.service.Audience;
-                                                              //  this.rate =  Math.round(this.service.RatingValue);
 
+      this.catalogService.getServiceById(id)
+      .subscribe(res => {
+        this.service = res;
+        this.categories = this.service.Categoryies;
+        this.channels = this.service.Channels;
+        this.audiences = this.service.Audience;
+      //  this.rate =  Math.round(this.service.RatingValue);
       });
     });
   }

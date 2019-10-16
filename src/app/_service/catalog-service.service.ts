@@ -8,7 +8,6 @@ export class CatalogService {
 
   private subject = new Subject<any>() ;
 
-  allData: [];
   readonly baseURL = 'http://10.0.15.125:5001/api/ServiceCatalog/GetService';
   readonly secondURL = 'http://10.0.15.125:5002/api/servicedbs/';
 
@@ -49,6 +48,18 @@ export class CatalogService {
     );
   }
 
+  updateService(ser: any): Observable<any> {
+    console.log(ser);
+    return this.http.put<any>(this.secondURL , ser , {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }).pipe(
+      tap(() => {
+        this.refreshMethod.next();
+      })
+    );
+  }
 
   getAllChannels() {
     return this.http.get('http://10.0.15.125:5002/api/ServiceCatalogChannelDBs');

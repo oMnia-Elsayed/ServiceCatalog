@@ -3,7 +3,6 @@ import { CatalogService } from 'src/app/_service/catalog-service.service';
 import { FormGroup, FormControl, Validators, FormArray} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
-import { ModalManager } from 'ngb-modal';
 
 @Component({
   selector: 'app-add-edit',
@@ -21,64 +20,10 @@ export class AddEditComponent implements OnInit {
   categoryArray = [];
   checkedCategories = [];
 
-  constructor(public catalogService: CatalogService, private router: Router,
-              private route: ActivatedRoute, private modalService: ModalManager) {
-
-    const id = this.route.snapshot.params.id;
-
-    if (id) {
-      this.editMode = true;
-      this.catalogService.getServiceById(id).subscribe(res => {this.service = res;
-                                                               console.log(this.service);
-                                                               this.serviceForm = new FormGroup({
-          ServiceTitle: new FormControl(this.editMode ? this.service.Name : '',
-           [Validators.required, Validators.minLength(3), Validators.maxLength(20), Validators.pattern(/^[A-Za-z ]+(?:[_-][A-Za-z ]+)*$/)]),
-
-          ServiceBrief: new FormControl(this.editMode ? this.service.Brief : '',
-           [ Validators.minLength(3), Validators.maxLength(20), Validators.pattern(/^[A-Za-z ]+(?:[_-][A-Za-z ]+)*$/)]),
-
-          Rating: new FormControl(this.editMode ? this.service.Rating : '0', [Validators.pattern(/^(\d*\.)?\d+$/)]),
-          Rated: new FormControl(this.editMode ? this.service.Rated : '0', [Validators.pattern(/^(\d*\.)?\d+$/)]),
-          ServiceUsage: new FormControl(this.editMode ? this.service.ServiceUsage : '0', [Validators.pattern(/^(\d*\.)?\d+$/)]),
-
-          // ServiceCategoryDBs: new FormArray(this.editMode ? this.service.Categoryies : []),
-          // ServiceChannelDBs: new FormArray(this.editMode ? this.service.Channels : []),
-          ServiceCatalogAudienceDB: new FormControl(this.editMode ? this.service.Audience : ''),
-
-          CreatedOn: new FormControl(moment().format()),
-          ServiceCost: new FormControl(this.editMode ? this.service.ServiceCost : '', Validators.pattern(/^[0-9]*$/)),
-          ServicePeriod: new FormControl(this.editMode ? this.service.ServicePeriod : '', Validators.pattern(/^[0-9]*$/)),
-
-          ServiceExternalLink: new FormControl(this.editMode ? this.service.ServiceExternalLink : '',
-           Validators.pattern(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/)),
-          ServiceDocuments: new FormControl(''),
-          ServiceAfterRequest: new FormControl(this.editMode ? this.service.ServiceAfterRequest : '',
-           Validators.pattern(/^[A-Za-z ]+(?:[_-][A-Za-z ]+)*$/)),
-          ServiceSteps: new FormControl(this.editMode ? this.service.ServiceSteps : '',
-           Validators.pattern(/^[A-Za-z ]+(?:[_-][A-Za-z ]+)*$/)),
-          ServiceRequirements: new FormControl(this.editMode ? this.service.ServiceRequirements : '',
-           Validators.pattern(/^[A-Za-z ]+(?:[_-][A-Za-z ]+)*$/)),
-          ServiceWorkflow: new FormControl(this.editMode ? this.service.ServiceWorkflow : '',
-           Validators.pattern(/^[A-Za-z ]+(?:[_-][A-Za-z ]+)*$/)),
-
-          Modified: new FormControl(this.editMode ? this.service.Modified : ''),
-          ServiceAvailable: new FormControl(this.editMode ? this.service.ServiceAvailable : false),
-          AudienceId: new FormControl(this.editMode ? this.service.Audience : ''),
-          ServiceAgency: new FormControl(this.editMode ? this.service.Agency : '')
-        });
-                                                               this.checkedChannels = this.service.Channels ;
-                                                               console.log(this.checkedChannels);
-                                                               this.checkedCategories = this.service.Categoryies ;
-                                                               // tslint:disable-next-line: max-line-length
-                                                               this.checkedChannels.forEach(item => document.getElementById(`${item.Id}`).setAttribute('checked', 'checked'));
-                                                               // tslint:disable-next-line: max-line-length
-                                                               this.checkedCategories.forEach(item => document.getElementById(`c${item.Id}`).setAttribute('checked', 'checked'));
-
-      });
-    }
-  }
+  constructor(public catalogService: CatalogService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
+
     this.serviceForm = new FormGroup({
       ServiceTitle: new FormControl('',
       [Validators.required, Validators.minLength(3), Validators.maxLength(20), Validators.pattern(/^[A-Za-z ]+(?:[_-][A-Za-z ]+)*$/)]),
@@ -106,6 +51,23 @@ export class AddEditComponent implements OnInit {
       ServiceAgency: new FormControl('')
     });
 
+    const id = this.route.snapshot.params.id;
+    if (id) {
+      this.editMode = true;
+      this.catalogService.getServiceById(id)
+      .subscribe(res => {
+        this.service = res;
+        this.serviceForm.patchValue(this.service);
+
+        this.checkedChannels = this.service.Channels ;
+        // console.log(this.checkedChannels);
+        this.checkedCategories = this.service.Categoryies ;
+        this.checkedChannels.forEach(item => document.getElementById(`${item.Id}`).setAttribute('checked', 'checked'));
+        this.checkedCategories.forEach(item => document.getElementById(`c${item.Id}`).setAttribute('checked', 'checked'));
+
+      });
+    }
+
     this.catalogService.getAllChannels().subscribe(res => this.channelsArray = res as []);
     this.catalogService.getAllCategories().subscribe(res => this.categoryArray = res as []);
 
@@ -116,9 +78,11 @@ export class AddEditComponent implements OnInit {
       this.service.Channels = this.checkedChannels ;
       this.service.Categoryies = this.checkedCategories ;
       if (this.editMode) {
-
+        // console.log(JSON.stringify(this.serviceForm.value));
+        this.catalogService.updateService(JSON.stringify(this.serviceForm.value))
+        .subscribe(res => {});
       } else {
-        console.log(JSON.stringify(this.serviceForm.value));
+        // console.log(JSON.stringify(this.serviceForm.value));
         this.catalogService.addService(JSON.stringify(this.serviceForm.value))
         .subscribe(res => {});
       }

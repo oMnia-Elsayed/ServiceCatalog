@@ -30,11 +30,11 @@
 
       <div class="col-12">
         <span>Audience: </span>
-        <span> {{ audiences}} </span>
+        <span> {{ audiences }} </span>
       </div>
       <div class="col-12">
         <span>Duration: </span>
-        <span> {{ service.ServicePeriod}} days</span>
+        <span> {{ service.ServicePeriod }} days</span>
       </div>
 
     </div>
@@ -45,34 +45,6 @@
     <button class="btn btn-lg my-4 service_requestBtn"> Request Service </button>
   </div>
 </div>
-
-
-<!-- <div class="container">
-  <div class="row">
-    <div class="col-12">
-      <accordion [isAnimated]="true">
-        <accordion-group heading="Service Description" *ngIf="catalogService.service.ServiceBrief != null">
-          {{ catalogService.service.ServiceBrief}}
-        </accordion-group>
-        <accordion-group heading="Service Requirments" *ngIf="catalogService.service.ServiceRequirements != null">
-          <p>{{ catalogService.service.ServiceRequirements}}</p>
-        </accordion-group>
-        <accordion-group heading="Service Flow Char" *ngIf="catalogService.service.Workflow != null">
-          <p>{{ catalogService.service.Workflow}}</p>
-        </accordion-group>
-        <accordion-group heading="Service Delivery" *ngIf="catalogService.service.ServicesSteps != null">
-          <p>{{ catalogService.service.ServicesSteps}}</p>
-        </accordion-group>
-        <accordion-group heading="Service Documents" *ngIf="catalogService.service.ServiceDocuments != null">
-          <p>{{ catalogService.service.ServiceDocuments}}</p>
-        </accordion-group>
-        <accordion-group heading="After Request Service" *ngIf="catalogService.service.ServiceAfterRequest != null">
-          <p>{{ catalogService.service.ServiceAfterRequest}}</p>
-        </accordion-group>
-      </accordion>
-    </div>
-  </div>
-</div> -->
 
 <div class="container">
   <div class="row">
@@ -111,7 +83,7 @@
         <span class="service_rate"> Rate the service:
           <rating [(ngModel)]="rate" [max]="max" [readonly]="isReadonly" (onHover)="hoveringOver($event)"
             (onLeave)="resetStar()"></rating>
-          <span class="label" [ngStyle]="{display: (overStar && !isReadonly) ? 'inline' : 'none'}">{{percent}}%</span> {{rate}}
+          <!-- <span class="label" [ngStyle]="{display: (overStar && !isReadonly) ? 'inline' : 'none'}">{{percent}}%</span> -->
         </span>
       </div>
     </div>

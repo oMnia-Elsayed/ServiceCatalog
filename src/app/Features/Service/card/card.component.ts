@@ -39,7 +39,7 @@ export class CardComponent implements OnInit {
   }
 
   navigateToEdit(cat) {
-    console.log(cat);
+    // console.log(cat);
     this.router.navigate([`/edit-service/${cat.Id}`]);
   }
 
