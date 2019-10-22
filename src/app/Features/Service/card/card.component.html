@@ -25,7 +25,7 @@
         <a [routerLink]="['']" routerLinkActive="router-link-active"  (click)="openModel($event,catalog.Id)" ><img src="../../../../assets/images/delete.png" class="card_deleteIcon" alt=""></a>
       </div>
       <div class="col d-flex justify-content-end">
-        <a [routerLink]="['/service' , 'details' , catalog.Id]" class="title">Service details</a>
+        <a [routerLink]="['/service/details', catalog.Id]" class="title">Service details</a>
       </div>
     </div>
   </div>

@@ -19,6 +19,8 @@ import { CatalogService } from './_service/catalog-service.service';
 import { CardComponent } from './Features/Service/card/card.component';
 import { DetailsComponent } from './Features/Service/details/details.component';
 import { AddEditComponent } from './Features/Service/add-edit/add-edit.component';
+import { CountryCityListComponent } from './Features/country-city-list/country-city-list.component';
+import { CountryCityService } from './_service/country-city.service';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,7 @@ import { AddEditComponent } from './Features/Service/add-edit/add-edit.component
     CardComponent,
     DetailsComponent,
     AddEditComponent,
+    CountryCityListComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,11 +47,14 @@ import { AddEditComponent } from './Features/Service/add-edit/add-edit.component
       { path: '', component: ListComponent },
       { path: 'service/details/:id', component: DetailsComponent },
       { path: 'add-service' , component: AddEditComponent},
-      { path: 'edit-service/:id' , component: AddEditComponent}
+      { path: 'edit-service/:id' , component: AddEditComponent},
+      { path: 'add-country' , component: CountryCityListComponent},
+      { path: 'edit-country/:id' , component: CountryCityListComponent},
     ])
   ],
   providers: [
     CatalogService,
+    CountryCityService,
   ],
   bootstrap: [AppComponent]
 })

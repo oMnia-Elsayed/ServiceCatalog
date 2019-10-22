@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CatalogService } from 'src/app/_service/catalog-service.service';
-import { FormGroup, FormControl, Validators, FormArray} from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray , FormBuilder} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 
@@ -20,36 +20,67 @@ export class AddEditComponent implements OnInit {
   categoryArray = [];
   checkedCategories = [];
 
-  constructor(public catalogService: CatalogService, private router: Router, private route: ActivatedRoute) {}
+  stringValidators =  Validators.pattern(/^[A-Za-z ]+(?:[_-][A-Za-z ]+)*$/);
+  emailValidators =  Validators.pattern(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/);
+  numberValidators =  Validators.pattern(/^[0-9]*$/);
+  decimalValidators =  Validators.pattern(/^(\d*\.)?\d+$/);
+  minLength = Validators.minLength(3);
+  maxLength = Validators.maxLength(50);
+
+  constructor(private catalogService: CatalogService, private router: Router,
+              private route: ActivatedRoute , private formBuilder: FormBuilder) {}
 
   ngOnInit() {
 
-    this.serviceForm = new FormGroup({
-      ServiceTitle: new FormControl('',
-      [Validators.required, Validators.minLength(3), Validators.maxLength(20), Validators.pattern(/^[A-Za-z ]+(?:[_-][A-Za-z ]+)*$/)]),
-      ServiceBrief: new FormControl('',
-      [ Validators.minLength(3), Validators.maxLength(50), Validators.pattern(/^[A-Za-z ]+(?:[_-][A-Za-z ]+)*$/)]),
-      Rating: new FormControl('0', Validators.pattern(/^(\d*\.)?\d+$/)),
-      Rated: new FormControl('0', Validators.pattern(/^(\d*\.)?\d+$/)),
-      ServiceUsage: new FormControl('0', Validators.pattern(/^(\d*\.)?\d+$/)),
-      ServiceCategoryDBs: new FormArray([]),
-      ServiceChannelDBs: new FormArray([]),
-      ServiceCatalogAudienceDB: new FormControl(''),
-      CreatedOn: new FormControl(moment().format()),
-      ServiceCost: new FormControl('', Validators.pattern(/^[0-9]*$/)),
-      ServicePeriod: new FormControl('', Validators.pattern(/^[0-9]*$/)),
-      ServiceExternalLink: new FormControl('',
-        Validators.pattern(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/)),
-      ServiceDocuments: new FormControl(''),
-      ServiceAfterRequest: new FormControl('', Validators.pattern(/^[A-Za-z ]+(?:[_-][A-Za-z ]+)*$/)),
-      ServiceSteps: new FormControl('', Validators.pattern(/^[A-Za-z ]+(?:[_-][A-Za-z ]+)*$/)),
-      ServiceRequirements: new FormControl('', Validators.pattern(/^[A-Za-z ]+(?:[_-][A-Za-z ]+)*$/)),
-      ServiceWorkflow: new FormControl('', Validators.pattern(/^[A-Za-z ]+(?:[_-][A-Za-z ]+)*$/)),
-      Modified: new FormControl(''),
-      ServiceAvailable: new FormControl(false),
-      AudienceId: new FormControl(''),
-      ServiceAgency: new FormControl('')
+    this.serviceForm = this.formBuilder.group({
+      ServiceTitle: ['', [ Validators.required, this.minLength , this.maxLength , this.stringValidators]],
+      ServiceBrief: ['', [ this.minLength , this.maxLength , this.stringValidators]],
+      Rating: ['0', this.decimalValidators],
+      Rated: ['0', this.decimalValidators],
+      ServiceUsage: ['0', this.decimalValidators],
+      ServiceCategoryDBs: this.formBuilder.array([]),
+      ServiceChannelDBs: this.formBuilder.array([]),
+      ServiceCatalogAudienceDB: [''],
+      CreatedOn: [moment().format()],
+      ServiceCost: ['', this.numberValidators],
+      ServicePeriod: ['', this.numberValidators],
+      ServiceExternalLink: ['', this.emailValidators],
+      ServiceDocuments: [''],
+      ServiceAfterRequest: ['', this.stringValidators],
+      ServiceSteps: ['', this.stringValidators],
+      ServiceRequirements: ['', this.stringValidators],
+      ServiceWorkflow: ['', this.stringValidators],
+      Modified: [''],
+      ServiceAvailable: [false],
+      AudienceId: [''],
+      ServiceAgency: ['']
     });
+
+    // this.serviceForm = new FormGroup({
+    //   ServiceTitle: new FormControl('',
+    //   [Validators.required, this.minLength , this.maxLength , this.stringValidators]),
+    //   ServiceBrief: new FormControl('',
+    //   [ Validators.minLength(3), Validators.maxLength(50), this.stringValidators]),
+    //   Rating: new FormControl('0', this.decimalValidators),
+    //   Rated: new FormControl('0', this.decimalValidators),
+    //   ServiceUsage: new FormControl('0', this.decimalValidators),
+    //   ServiceCategoryDBs: new FormArray([]),
+    //   ServiceChannelDBs: new FormArray([]),
+    //   ServiceCatalogAudienceDB: new FormControl(''),
+    //   CreatedOn: new FormControl(moment().format()),
+    //   ServiceCost: new FormControl('', this.numberValidators),
+    //   ServicePeriod: new FormControl('', this.numberValidators),
+    //   ServiceExternalLink: new FormControl('', this.emailValidators),
+    //   ServiceDocuments: new FormControl(''),
+    //   ServiceAfterRequest: new FormControl('', this.stringValidators),
+    //   ServiceSteps: new FormControl('', this.stringValidators),
+    //   ServiceRequirements: new FormControl('', this.stringValidators),
+    //   ServiceWorkflow: new FormControl('', this.stringValidators),
+    //   Modified: new FormControl(''),
+    //   ServiceAvailable: new FormControl(false),
+    //   AudienceId: new FormControl(''),
+    //   ServiceAgency: new FormControl('')
+    // });
 
     const id = this.route.snapshot.params.id;
     if (id) {

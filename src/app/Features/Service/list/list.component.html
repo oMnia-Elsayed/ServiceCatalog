@@ -15,16 +15,12 @@
     <div class="criteria_search">
       <div class="row">
         <div class="col-12">
-         <h3>Search Criteria</h3>
+          <h3>Search Criteria</h3>
         </div>
       </div>
       <div class="row ">
         <div class="col-lg-2 col-md-6 mb-2">
-          <div class="btn-group w-100" dropdown>
-            <button id="button-basic" dropdownToggle type="button" class="btn dropdown-toggle w-100"
-              aria-controls="dropdown-basic" (click)="getAll()">
-              All Data </button>
-          </div>
+          <button id="button-basic" type="button" class="btn w-100" (click)="getAll()"> All Data </button>
         </div>
         <div class="col-lg-2 col-md-6 mb-2">
           <div class="btn-group w-100" dropdown>
@@ -33,7 +29,8 @@
               All Channels <span class="caret"></span>
             </button>
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-              <li role="menuitem" *ngFor="let c of channels"><a class="dropdown-item" (click)="getFilter(c,'channel')">{{c.Name}}</a></li>
+              <li role="menuitem" *ngFor="let c of channels"><a class="dropdown-item"
+                  (click)="getFilter(c,'channel')">{{c.Name}}</a></li>
             </ul>
           </div>
         </div>
@@ -44,7 +41,8 @@
               All Categories <span class="caret"></span>
             </button>
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-              <li role="menuitem" *ngFor="let c of categories"><a class="dropdown-item" (click)="getFilter(c,'category')">{{c.Name}}</a></li>
+              <li role="menuitem" *ngFor="let c of categories"><a class="dropdown-item"
+                  (click)="getFilter(c,'category')">{{c.Name}}</a></li>
             </ul>
           </div>
         </div>
@@ -55,35 +53,46 @@
               All Audience <span class="caret"></span>
             </button>
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-              <li role="menuitem" *ngFor="let c of audiences"><a class="dropdown-item" (click)="getFilter(c,'audience')">{{c.Name}}</a></li>
+              <li role="menuitem" *ngFor="let c of audiences"><a class="dropdown-item"
+                  (click)="getFilter(c,'audience')">{{c.Name}}</a></li>
             </ul>
           </div>
         </div>
 
         <div class="col-lg-3 col-md-6 mb-2">
-          <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText" autocomplete="off">
+          <input type="text" class="form-control" placeholder=" Search" [(ngModel)]="searchText" autocomplete="off">
         </div>
 
         <div class="col-lg-1 col-md-6 mb-2">
           <button class="btn btn-warning w-100" (click)="clearSearch($event)">Clear</button>
         </div>
+
+        <button class="btn btn-primary"><a [routerLink]="['/add-country']" routerLinkActive="router-link-active" >Add Country</a></button>
+        <!-- <button class="btn btn-primary"><a [routerLink]="['/-country']" routerLinkActive="router-link-active" >Add Country</a></button> -->
+
       </div>
     </div>
   </div>
 </div>
 
-<div class="container">
+<div class="d-flex justify-content-center p-5 m-5" *ngIf="showLoader">
+  <img src="../../../../assets/images/loading.gif" alt="loader" />
+</div>
+
+<div class="container" *ngIf="!showLoader">
   <div class="row">
-    <div class="col-lg-3 col-md-4 col-sm-6 col serviceCard" *ngFor="let cs of allData | filter:searchText | paginate : { itemsPerPage: 8, currentPage: p}">
+    <div class="col-lg-3 col-md-4 col-sm-6 col serviceCard"
+      *ngFor="let cs of allData | filter:searchText | paginate : { itemsPerPage: 8, currentPage: p}">
       <app-card [Catalog]="cs"></app-card>
     </div>
   </div>
 </div>
 
-<div class="container" *ngIf="allData.length > 8">
+<div class="container" *ngIf="allData.length > 8  && !showLoader">
   <div class="row my-4">
-  <div class="col-12" align = "center">
-    <pagination-controls class="my-pagination" (pageChange)="p=$event" previousLabel="" nextLabel=""></pagination-controls>
-  </div>
+    <div class="col-12" align="center">
+      <pagination-controls class="my-pagination" (pageChange)="p=$event" previousLabel="" nextLabel="">
+      </pagination-controls>
+    </div>
   </div>
 </div>

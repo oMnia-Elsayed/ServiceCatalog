@@ -20,7 +20,9 @@ export class ListComponent implements OnInit {
   audiences ;
   filterArray = [];
 
-  constructor(public catalogService: CatalogService) {}
+  showLoader = true;
+
+  constructor(private catalogService: CatalogService) {}
 
   ngOnInit() {
 
@@ -33,6 +35,7 @@ export class ListComponent implements OnInit {
     this.catalogService.getAllChannels().subscribe(res => this.channels = res as []);
     this.catalogService.getAllCategories().subscribe(res => this.categories = res as []);
     this.catalogService.getAllAudiences().subscribe(res => this.audiences = res );
+
   }
 
  getAll() {
@@ -41,7 +44,7 @@ export class ListComponent implements OnInit {
       // tslint:disable-next-line: no-string-literal
       this.allData = all['Services'] ;
       this.allDataClone = this.allData;
-      // console.log(this.allData);
+      this.showLoader = false;
     });
 
   }
