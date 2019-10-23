@@ -1,17 +1,17 @@
 <div class="container m-5">
   <div class="row">
     <div class="col-lg-2 col-md-6 mb-2">
-      <select class="btn btn-secondary" name="" id="countries" (change)="updateCityList($event)">
-        <option>Select</option>
-        <option *ngFor="let c of countries; let i = index;" value={{c.id}} ><a> {{c.name}} </a></option>
+      <select class="btn btn-secondary" id="countries" (change)="updateCityList($event)">
+        <option selected>Countries</option>
+        <option *ngFor="let c of countries; let i = index;" value={{c.id}} [selected]="selectedCountryId === c.id" ><a> {{c.name}} </a></option>
       </select>
     </div>
 
     <div class="col-lg-2 col-md-6 mb-2" *ngIf="showCities">
 
-      <select class="btn btn-secondary" name="" id="cities" (change)="addCity($event)">
-        <option>Select</option>
-        <option *ngFor="let c of cities; let i = index;" value={{c.id}}><a> {{c.name}} </a></option>
+      <select class="btn btn-secondary" id="cities" (change)="addCity($event)">
+        <option>Cities</option>
+        <option *ngFor="let c of cities; let i = index;" value={{c.id}} [selected]="selectedCityId === c.id"><a> {{c.name}} </a></option>
       </select>
 
     </div>
@@ -29,7 +29,7 @@
   <tr *ngFor="let e of localData">
     <td *ngIf="selectedCountry">{{e.country.name}}</td>
     <td *ngIf="selectedCity">{{e.city.name}}</td>
-    <td> <a [routerLink]="['/edit-country' , e.country.id, e.city.id]" routerLinkActive="router-link-active" > <img src="../../../assets/images/edit.png" alt=""/></a></td>
+    <td><a [routerLink]="['/edit-country' , e.country.id, e.city.id]" routerLinkActive="router-link-active" > <img src="../../../assets/images/edit.png" alt=""/></a></td>
   </tr>
 </table>
 

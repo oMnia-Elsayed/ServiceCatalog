@@ -19,35 +19,30 @@ export class CountryCityListComponent implements OnInit {
   selectedCountry;
   selectedCity;
 
-  countryId;
-  cityId;
   localData;
   showCities = false;
   showTable = false;
   constructor(private countryCityService: CountryCityService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    // this.localData = localStorage.getItem('countries') ? localStorage.getItem('countries') : localStorage.setItem('countries', '[]') ;
 
     // localStorage.clear();
 
     this.localData = JSON.parse(localStorage.getItem('countries')) || [];
     this.countries = this.countryCityService.getAllCountries();
 
-    // // tslint:disable-next-line: radix
-    // this.countryId = parseInt(this.route.snapshot.params.id);
+    // tslint:disable-next-line: radix
+    this.selectedCountryId = parseInt(this.route.snapshot.params.id);
 
-    // // tslint:disable-next-line: radix
-    // this.cityId = parseInt(this.route.snapshot.params.cid);
+    // tslint:disable-next-line: radix
+    this.selectedCityId = parseInt(this.route.snapshot.params.cid);
 
-    // if (this.countryId) {
-    //   this.showCities = true;
-    //   this.country = this.countryCityService.getCountryById(this.countryId);
-    //   this.city = this.countryCityService.getCityById(this.cityId);
-    //   this.cities = this.countryCityService.getCitiesByCountryId(this.countryId);
-    // } else {
-    //   this.cities = this.countryCityService.getAllCities();
-    // }
+    if (this.selectedCountryId) {
+      this.showCities = true;
+      this.cities = this.countryCityService.getCitiesByCountryId(this.selectedCountryId);
+    } else {
+      this.cities = this.countryCityService.getAllCities();
+    }
   }
 
   updateCityList(event) {
@@ -68,8 +63,6 @@ export class CountryCityListComponent implements OnInit {
     let dataFound = false;
     if (this.localData.length > 0) {
       this.localData.forEach(el => {
-        console.log(el);
-
         if (el.country.id === this.selectedCountryId) {
           el.city = this.selectedCity;
           dataFound = true;
