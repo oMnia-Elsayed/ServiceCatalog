@@ -1,38 +1,68 @@
 <div class="container m-5">
   <div class="row">
     <div class="col-lg-2 col-md-6 mb-2">
-      <div class="btn-group w-100" dropdown>
-        <button id="button-basic" dropdownToggle type="button" class="btn dropdown-toggle w-100"
-          aria-controls="dropdown-basic"> <span>All Countries</span> <span class="caret"></span>
-        </button>
-        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-          <!-- <li role="menuitem" *ngFor="let c of countries "><a class="dropdown-item" [routerLink]="['/edit-country' , c.id]" routerLinkActive="router-link-active"  (click)="getCities(c.id)">{{c.name}}</a></li> -->
-          <li role="menuitem" *ngFor="let c of countries; let i = index;" ><a class="dropdown-item" [ngClass]="{active: country.id === c.id }" id={{i}} (click)="getCountry(i+1)">{{c.name}}</a></li>
-        </ul>
-      </div>
-
-      <!-- <select name="" id="countries"  >
-        <option *ngFor="let c of countries; let i = index;" value={{c.name}} id={{i+1}}><a (click)="getCountry($event)"> {{c.name}} </a></option>
-      </select> -->
+      <select class="btn btn-secondary" name="" id="countries" (change)="updateCityList($event)">
+        <option>Select</option>
+        <option *ngFor="let c of countries; let i = index;" value={{c.id}} ><a> {{c.name}} </a></option>
+      </select>
     </div>
 
     <div class="col-lg-2 col-md-6 mb-2" *ngIf="showCities">
-      <div class="btn-group w-100" dropdown>
-        <button id="button-basic" dropdownToggle type="button" class="btn dropdown-toggle w-100"
-          aria-controls="dropdown-basic"> <span>All Cities</span> <span class="caret"></span>
-        </button>
-        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-          <li role="menuitem" *ngFor="let c of cities"><a class="dropdown-item" (click)="addCity(c)">{{c.name}}</a></li>
-        </ul>
-      </div>
+
+      <select class="btn btn-secondary" name="" id="cities" (change)="addCity($event)">
+        <option>Select</option>
+        <option *ngFor="let c of cities; let i = index;" value={{c.id}}><a> {{c.name}} </a></option>
+      </select>
+
     </div>
   </div>
 </div>
 
+
+<table *ngIf="showTable">
+  <tr>
+    <th>Country</th>
+    <th>City</th>
+    <th>edit</th>
+  </tr>
+
+  <tr *ngFor="let e of localData">
+    <td *ngIf="selectedCountry">{{e.country.name}}</td>
+    <td *ngIf="selectedCity">{{e.city.name}}</td>
+    <td> <a [routerLink]="['/edit-country' , e.country.id, e.city.id]" routerLinkActive="router-link-active" > <img src="../../../assets/images/edit.png" alt=""/></a></td>
+  </tr>
+</table>
+
+<!-- <div >
+  {{selectedCountry.name}}
+</div>
+<div *ngIf="selectedCity">
+  {{selectedCity.name}}
+</div> -->
 <!-- <div class="container"> -->
-  <!-- <div *ngFor="let city of addedCities">
-    <span class="mr-3">{{country.name}}</span>
-    <span class="mr-3">{{city.name}}</span>
-    <button [routerLink]="['/edit-country', city.countryId]" routerLinkActive="router-link-active" > Edit Country </button>
-  </div> -->
+<!-- <div *ngFor="let city of addedCities">
+  <span class="mr-3">{{selectedCountry.name}}</span>
+  <span class="mr-3">{{city.name}}</span>
+  <button [routerLink]="['/edit-country', city.countryId, city.id]" routerLinkActive="router-link-active"> Edit Country
+  </button>
+</div> -->
 <!-- </div> -->
+
+<!-- Countries -->
+<!-- <div class="btn-group w-100" dropdown>
+  <button id="button-basic" dropdownToggle type="button" class="btn dropdown-toggle w-100"
+    aria-controls="dropdown-basic"> <span>All Countries</span> <span class="caret"></span>
+  </button>
+  <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+    <li role="menuitem" *ngFor="let c of countries; let i = index;" ><a class="dropdown-item" [ngClass]="{active: id && country.id === c.id }" id={{i}} (click)="getCountry(i+1)">{{c.name}}</a></li>
+  </ul>
+</div> -->
+<!-- Cities -->
+<!-- <div class="btn-group w-100" dropdown>
+  <button id="button-basic" dropdownToggle type="button" class="btn dropdown-toggle w-100"
+    aria-controls="dropdown-basic"> <span>All Cities</span> <span class="caret"></span>
+  </button>
+  <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+    <li role="menuitem" *ngFor="let c of cities"><a class="dropdown-item" [ngClass]="{active: cid && city.id === c.id }" (click)="addCity(c)">{{c.name}}</a></li>
+  </ul>
+</div> -->

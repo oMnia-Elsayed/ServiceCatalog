@@ -13,45 +13,73 @@ export class CountryCityListComponent implements OnInit {
 
   countries: Country[];
   cities: City[];
-  country: Country;
-  addedCities = [];
+
+  selectedCountryId;
+  selectedCityId;
+  selectedCountry;
+  selectedCity;
+
+  countryId;
+  cityId;
+  localData;
   showCities = false;
-  addedCountry = [];
+  showTable = false;
   constructor(private countryCityService: CountryCityService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    // this.localData = localStorage.getItem('countries') ? localStorage.getItem('countries') : localStorage.setItem('countries', '[]') ;
 
+    // localStorage.clear();
+
+    this.localData = JSON.parse(localStorage.getItem('countries')) || [];
     this.countries = this.countryCityService.getAllCountries();
 
-    // tslint:disable-next-line: radix
-    const id = parseInt(this.route.snapshot.params.id);
+    // // tslint:disable-next-line: radix
+    // this.countryId = parseInt(this.route.snapshot.params.id);
 
-    if (id) {
-      this.showCities = true;
-      this.country = this.countryCityService.getCountryById(id);
-      this.cities = this.countryCityService.getCitiesByCountryId(id);
-    } else {
-      this.cities = this.countryCityService.getAllCities();
-    }
+    // // tslint:disable-next-line: radix
+    // this.cityId = parseInt(this.route.snapshot.params.cid);
+
+    // if (this.countryId) {
+    //   this.showCities = true;
+    //   this.country = this.countryCityService.getCountryById(this.countryId);
+    //   this.city = this.countryCityService.getCityById(this.cityId);
+    //   this.cities = this.countryCityService.getCitiesByCountryId(this.countryId);
+    // } else {
+    //   this.cities = this.countryCityService.getAllCities();
+    // }
   }
 
-  getCountry(event) {
-    console.log(event);
-
-    // this.country = this.countryCityService.getCountryById(id);
+  updateCityList(event) {
+    this.selectedCountryId = Number(event.target.value);
     this.showCities = true;
-    // this.getCities(id);
+    this.cities = this.countryCityService.getCitiesByCountryId(this.selectedCountryId);
   }
 
-  getCities(id: number) {
-    this.cities = this.countryCityService.getCitiesByCountryId(id);
+  addCity(event) {
+    this.selectedCityId = Number(event.target.value);
+    this.selectedCountry = this.countryCityService.getCountryById(this.selectedCountryId);
+    this.selectedCity = this.countryCityService.getCityById(this.selectedCityId);
+    this.showTable = true;
+    this.addEditData();
   }
 
-  addCity(c: City) {
-    if (!this.addedCities.find( e => e.id === c.id )) {
-      this.addedCities.push(c);
-      this.addedCountry.push({country: this.country , cities: this.addedCities});
-      console.log(this.addedCountry);
+  addEditData() {
+    let dataFound = false;
+    if (this.localData.length > 0) {
+      this.localData.forEach(el => {
+        console.log(el);
+
+        if (el.country.id === this.selectedCountryId) {
+          el.city = this.selectedCity;
+          dataFound = true;
+        }
+      });
     }
+
+    if (!dataFound) {
+      this.localData.push({ country: this.selectedCountry, city: this.selectedCity });
+    }
+    localStorage.setItem('countries', JSON.stringify(this.localData));
   }
 }

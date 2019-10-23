@@ -55,6 +55,10 @@ export class CountryCityService {
     return this.countries.find( c => c.id === id);
   }
 
+  getCityById(id: number) {
+    return this.cities.find( c => c.id === id);
+  }
+
   getCitiesByCountryId(id: number): City[] {
     return this.cities.filter( c => c.countryId === id);
   }
