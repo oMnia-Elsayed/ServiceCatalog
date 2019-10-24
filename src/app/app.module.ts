@@ -49,7 +49,7 @@ import { CountryCityService } from './_service/country-city.service';
       { path: 'add-service' , component: AddEditComponent},
       { path: 'edit-service/:id' , component: AddEditComponent},
       { path: 'add-country' , component: CountryCityListComponent},
-      { path: 'edit-country/:id/:cid' , component: CountryCityListComponent},
+      { path: 'edit-country' , component: CountryCityListComponent},
     ])
   ],
   providers: [

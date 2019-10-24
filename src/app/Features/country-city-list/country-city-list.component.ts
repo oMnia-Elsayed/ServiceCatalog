@@ -22,23 +22,26 @@ export class CountryCityListComponent implements OnInit {
   localData;
   showCities = false;
   showTable = false;
-  constructor(private countryCityService: CountryCityService, private route: ActivatedRoute) { }
+  constructor(private countryCityService: CountryCityService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-
     // localStorage.clear();
-
     this.localData = JSON.parse(localStorage.getItem('countries')) || [];
     this.countries = this.countryCityService.getAllCountries();
 
-    // tslint:disable-next-line: radix
-    this.selectedCountryId = parseInt(this.route.snapshot.params.id);
+    this.route.queryParams.subscribe( params => {
+      this.selectedCountryId = +params.countryId;
+      this.selectedCityId = +params.cityId;
+      this.filterCitiesBasedUrl();
+    });
 
-    // tslint:disable-next-line: radix
-    this.selectedCityId = parseInt(this.route.snapshot.params.cid);
+    this.filterCitiesBasedUrl();
+  }
 
+  filterCitiesBasedUrl() {
     if (this.selectedCountryId) {
       this.showCities = true;
+      this.showTable = true;
       this.cities = this.countryCityService.getCitiesByCountryId(this.selectedCountryId);
     } else {
       this.cities = this.countryCityService.getAllCities();
@@ -47,16 +50,14 @@ export class CountryCityListComponent implements OnInit {
 
   updateCityList(event) {
     this.selectedCountryId = Number(event.target.value);
+    this.selectedCountry = this.countryCityService.getCountryById(this.selectedCountryId);
     this.showCities = true;
     this.cities = this.countryCityService.getCitiesByCountryId(this.selectedCountryId);
   }
 
   addCity(event) {
     this.selectedCityId = Number(event.target.value);
-    this.selectedCountry = this.countryCityService.getCountryById(this.selectedCountryId);
     this.selectedCity = this.countryCityService.getCityById(this.selectedCityId);
-    this.showTable = true;
-    this.addEditData();
   }
 
   addEditData() {
@@ -74,5 +75,16 @@ export class CountryCityListComponent implements OnInit {
       this.localData.push({ country: this.selectedCountry, city: this.selectedCity });
     }
     localStorage.setItem('countries', JSON.stringify(this.localData));
+  }
+
+  removeFromLocalStorage(event) {
+    const id = Number(event.target.id);
+    this.localData = this.localData.filter(item => item.country.id !== id);
+    localStorage.setItem('countries', JSON.stringify(this.localData));
+  }
+
+  onSubmit() {
+    this.showTable = true;
+    this.addEditData();
   }
 }
